@@ -27,6 +27,11 @@
 #define VAR GRN_PROC_GET_VAR_BY_OFFSET
 #define TEXT_VALUE_LEN(x) GRN_TEXT_VALUE(x), GRN_TEXT_LEN(x)
 
+#define GRN_CHECK_VERSION(major,minor,micro)				\
+  (GRN_MAJOR_VERSION > (major) ||					\
+   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION > (minor)) ||	\
+   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION == (minor) && GRN_MICRO_VERSION >= (micro)))
+
 typedef struct _grn_cache_entry grn_cache_entry;
 
 struct _grn_cache {
