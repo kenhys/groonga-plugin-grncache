@@ -12,6 +12,8 @@ AC_PROG_CC
 
 AC_PROG_LIBTOOL
 
+AC_CHECK_HEADERS(pthread.h)
+
 if test "$GCC" = "yes"; then
   CFLAGS="$CFLAGS -Wall -Wextra"
   CFLAGS="$CFLAGS -Wmissing-declarations -Wmissing-prototypes"
