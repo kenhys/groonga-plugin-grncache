@@ -142,10 +142,6 @@ GRN_PLUGIN_REGISTER(grn_ctx *ctx)
   grn_plugin_expr_var_init(ctx, &vars[1], "dump", -1);
   grn_plugin_command_create(ctx, "grncache", -1, command_grncache, 2, vars);
 
-/*
-  grn_proc_create(ctx, CONST_STR_LEN("suggest_preparer"), GRN_PROC_FUNCTION,
-                  func_suggest_preparer, NULL, NULL, 0, NULL);
-*/
   return ctx->rc;
 }
 
