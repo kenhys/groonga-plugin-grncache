@@ -1,3 +1,9 @@
+#
+*.in
+*.log
+.libs
+.deps
+
 # Object files
 *.o
 *.ko
