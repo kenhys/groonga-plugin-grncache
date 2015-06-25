@@ -17,11 +17,19 @@
 
 #include <string.h>
 
-#include "grn.h"
-#include "grn_ctx.h"
-#include "grn_db.h"
-#include "grn_ii.h"
-#include "grn_output.h"
+#if GRN_CHECK_VERSION(4,0,8)
+  #include "grn.h"
+  #include "grn_ctx.h"
+  #include "grn_db.h"
+  #include "grn_ii.h"
+  #include "grn_output.h"
+#else
+  #include "groonga_in.h"
+  #include "ctx_impl.h"
+  #include "db.h"
+  #include "ii.h"
+  #include "output.h"
+#endif
 #include <groonga/plugin.h>
 
 #define VAR GRN_PROC_GET_VAR_BY_OFFSET
