@@ -106,7 +106,11 @@ output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *stati
     GRN_OUTPUT_CSTR("nref");
     GRN_OUTPUT_INT32(entry->nref);
     GRN_OUTPUT_CSTR("timeval");
+#if GRN_CHECK_VERSION(5,0,3)
     grn_timeval2str(ctx, &(entry->tv), &buf[0], GRN_TIMEVAL_STR_SIZE);
+#else
+    grn_timeval2str(ctx, &(entry->tv), &buf[0]);
+#endif
     GRN_OUTPUT_STR(buf, strlen(buf));
     GRN_OUTPUT_CSTR("value");
     GRN_OUTPUT_STR(GRN_TEXT_VALUE(entry->value), GRN_TEXT_LEN(entry->value));
