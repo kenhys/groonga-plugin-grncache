@@ -45,6 +45,16 @@ GROONGA="${pkg_cv_GROONGA}"
 AC_SUBST(GROONGA_PLUGINS_DIR)
 AC_SUBST(GROONGA)
 
+# DANGER!!!: stack size
+GRN_STACK_SIZE=1024
+AC_ARG_WITH(stack_size,
+  [AS_HELP_STRING([--with-stack-size=SIZE],
+    [DANGER!!!
+     This option specifies stack size. (default=$GRN_STACK_SIZE)
+     Normally, you should not use this option.])],
+  GRN_STACK_SIZE="$withval")
+AC_DEFINE_UNQUOTED(GRN_STACK_SIZE, [$GRN_STACK_SIZE], [stack size])
+
 grncache_pluginsdir="${GROONGA_PLUGINS_DIR}/grncache"
 AC_SUBST(grncache_pluginsdir)
 
