@@ -59,6 +59,6 @@ Here is the example how to show `Grncache` all entries.
 % curl http://localhost:10041/d/grncache?action=dump
 ```
 
-## Limitations
+## TODO
 
-`Grncache` supports Groonga 4.0.3 or later because `Grncache` uses `grn_plugin_expr_var_init()` which is introduced at Groonga 4.0.3.
+* filter dump data
