@@ -13,6 +13,7 @@ AC_PROG_CC
 AC_PROG_LIBTOOL
 
 AC_CHECK_HEADERS(pthread.h)
+AC_CHECK_HEADERS(netdb.h)
 
 if test "$GCC" = "yes"; then
   CFLAGS="$CFLAGS -Wall -Wextra"
