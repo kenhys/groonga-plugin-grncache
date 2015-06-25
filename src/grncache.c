@@ -136,7 +136,7 @@ GRN_PLUGIN_INIT(grn_ctx *ctx)
 grn_rc
 GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 {
-  grn_expr_var vars[12];
+  grn_expr_var vars[2];
 
   grn_plugin_expr_var_init(ctx, &vars[0], "status", -1);
   grn_plugin_expr_var_init(ctx, &vars[1], "dump", -1);
