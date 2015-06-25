@@ -48,11 +48,9 @@ AC_SUBST(grncache_pluginsdir)
 AC_ARG_WITH(groonga-source-dir,
   [AS_HELP_STRING([--with-groonga-source-dir],
                   [specify Groonga source directory (default=empty)])],
-  [grnsrc_dir="$withval"],
-  [grnsrc_dir=""])
-if test "x$grnsrc_dir" != "x"; then
-  AC_SUBST(grnsrc_dir)
-fi
+  [grnsrc_dir="$withval"])
+GRNINTERNAL_CFLAGS="-I${grnsrc_dir}/lib"
+AC_SUBST(GRNINTERNAL_CFLAGS)
 
 
 AC_CONFIG_FILES([
