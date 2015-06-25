@@ -14,3 +14,7 @@ Note that Grncache requires Groonga's source code because it uses internal heade
 ```
 
 Confirm `grncache.so` is correctly installed under `pkg-config --variable=pluginsdir groonga`/grncache. Typically, that path is equivalent to `/usr/lib/groonga/plugins/grncache/grncache.so`.
+
+## Limitations
+
+`Grncache` supports Groonga 4.0.8 or later.
