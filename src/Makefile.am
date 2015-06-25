@@ -1,4 +1,6 @@
-AM_CFLAGS = $(GROONGA_CFLAGS)
+AM_CFLAGS = \
+	$(GRNINTERNAL_CFLAGS) \
+	$(GROONGA_CFLAGS)
 
 AM_LDFLAGS =					\
 	-avoid-version				\
