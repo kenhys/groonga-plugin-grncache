@@ -147,7 +147,7 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
 grn_rc
 GRN_PLUGIN_INIT(grn_ctx *ctx)
 {
-  return GRN_SUCCESS;
+  return ctx->rc;
 }
 
 grn_rc
@@ -163,5 +163,5 @@ GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 grn_rc
 GRN_PLUGIN_FIN(grn_ctx *ctx)
 {
-  return GRN_SUCCESS;
+  return ctx->rc;
 }
