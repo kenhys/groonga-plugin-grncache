@@ -164,9 +164,27 @@ grn_rc
 GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 {
   grn_expr_var vars[2];
+#if GRN_CHECK_VERSION(4,0,3)
   grn_plugin_expr_var_init(ctx, &vars[0], "action", -1);
   grn_plugin_command_create(ctx, "grncache", -1, command_grncache, 1, vars);
+#else
 
+#define CONST_STR_LEN(x) x, x ? sizeof(x) - 1 : 0
+#define DEF_VAR(v,x) do {                       \
+  (v).name = (x);\
+  (v).name_size = (x) ? sizeof(x) - 1 : 0;\
+  GRN_TEXT_INIT(&(v).value, 0);\
+} while (0)
+
+#define DEF_COMMAND(name,func,nvars,vars)\
+  (grn_proc_create(ctx, CONST_STR_LEN(name),\
+                   GRN_PROC_COMMAND, (func), NULL, NULL, (nvars), (vars)))
+
+  DEF_VAR(vars[0], "action");
+  DEF_COMMAND("grncache", command_grncache, 1, vars);
+#undef DEF_VAR
+#undef DEF_COMMAND
+#endif
   return ctx->rc;
 }
 
