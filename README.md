@@ -17,4 +17,4 @@ Confirm `grncache.so` is correctly installed under `pkg-config --variable=plugin
 
 ## Limitations
 
-`Grncache` supports Groonga 4.0.3 or later.
+`Grncache` supports Groonga 4.0.3 or later because `Grncache` uses `grn_plugin_expr_var_init()` which is introduced at Groonga 4.0.3.
