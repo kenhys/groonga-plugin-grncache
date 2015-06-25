@@ -63,7 +63,7 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
   grn_cache_entry *entry;
   grn_cache_statistics statistics;
   uint32_t nentries;
-  char buf[80];
+  char buf[GRN_TIMEVAL_STR_SIZE];
 
   cache = grn_cache_current_get(ctx);
 
@@ -112,7 +112,7 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     GRN_OUTPUT_CSTR("nref");
     GRN_OUTPUT_INT32(entry->nref);
     GRN_OUTPUT_CSTR("timeval");
-    grn_timeval2str(ctx, &(entry->tv), &buf[0]);
+    grn_timeval2str(ctx, &(entry->tv), &buf[0], GRN_TIMEVAL_STR_SIZE);
     GRN_OUTPUT_STR(buf, strlen(buf));
     GRN_OUTPUT_CSTR("value");
     GRN_OUTPUT_STR(GRN_TEXT_VALUE(entry->value), GRN_TEXT_LEN(entry->value));
