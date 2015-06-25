@@ -24,15 +24,7 @@
 #include "grn_output.h"
 #include <groonga/plugin.h>
 
-#ifdef HAVE__STRNICMP
-# ifdef strncasecmp
-#  undef strncasecmp
-# endif /* strcasecmp */
-# define strncasecmp(s1,s2,n) _strnicmp(s1,s2,n)
-#endif /* HAVE__STRNICMP */
-
 #define VAR GRN_PROC_GET_VAR_BY_OFFSET
-#define CONST_STR_LEN(x) x, x ? sizeof(x) - 1 : 0
 #define TEXT_VALUE_LEN(x) GRN_TEXT_VALUE(x), GRN_TEXT_LEN(x)
 
 typedef struct _grn_cache_entry grn_cache_entry;
