@@ -20,6 +20,8 @@
    (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION > (minor)) ||	\
    (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION == (minor) && GRN_MICRO_VERSION >= (micro)))
 
+#include "config.h"
+
 #include <string.h>
 
 #if GRN_CHECK_VERSION(4,0,8)
