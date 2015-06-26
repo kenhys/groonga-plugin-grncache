@@ -1,5 +1,10 @@
 News of groonga-plugin-grncache
 
+* 1.0.1 (2015-06-26)
+
+  * Extended supported Groonga version.
+    Groonga 3.0.8 or later is required.
+
 * 1.0.0 (2015-06-26)
 
   * Initial release.
