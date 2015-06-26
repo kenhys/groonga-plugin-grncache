@@ -61,7 +61,7 @@ Here is the example how to show `Grncache` all entries.
 
 ## Limitations
 
-`Grncache` supports Groonga 3.0.8 or later.
+`Grncache` requires Groonga 3.0.8 or later.
 
 ## TODO
 
