@@ -39,6 +39,10 @@
 #endif
 #include <groonga/plugin.h>
 
+#ifdef USE_ONIGURUMA
+#include <oniguruma.h>
+#endif
+
 #define VAR GRN_PROC_GET_VAR_BY_OFFSET
 #define TEXT_VALUE_LEN(x) GRN_TEXT_VALUE(x), GRN_TEXT_LEN(x)
 
@@ -90,11 +94,27 @@ output_grncache_status(grn_ctx *ctx, grn_cache_statistics *statistics)
 
 /* dump [HEADER, [[N], [{CACHE_ENTRY},...]]],*/
 static void
-output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *statistics)
+output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *statistics, const char *text)
 {
   grn_cache_entry *entry;
   uint32_t nentries;
   char buf[GRN_TIMEVAL_STR_SIZE];
+
+#ifdef USE_ONIGURUMA
+  int ret;
+  regex_t *regex;
+  OnigErrorInfo errorInfo;
+
+  if (text) {
+    ret = onig_new(&regex, (OnigUChar*)text, (OnigUChar*)text + strlen(text),
+                   ONIG_OPTION_SINGLELINE,
+                   ONIG_ENCODING_UTF8,
+                   ONIG_SYNTAX_DEFAULT, &errorInfo);
+    if (ret != ONIG_NORMAL) {
+      fprintf(stderr, "failed to onig_new\n");
+    }
+  }
+#endif
 
   GRN_OUTPUT_ARRAY_OPEN("RESULT", 2);
   GRN_OUTPUT_ARRAY_OPEN("CACHE_COUNT", 1);
@@ -110,6 +130,22 @@ output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *stati
   entry = cache->next;
   nentries = statistics->nentries;
   while (entry && nentries > 0) {
+#ifdef USE_ONIGURUMA
+    if (text) {
+      ret = onig_search(regex,
+                        (UChar*)GRN_TEXT_VALUE(entry->value),
+                        (UChar*)GRN_TEXT_VALUE(entry->value) + GRN_TEXT_LEN(entry->value),
+                        (UChar*)GRN_TEXT_VALUE(entry->value),
+                        (UChar*)GRN_TEXT_VALUE(entry->value) + GRN_TEXT_LEN(entry->value),
+                        NULL,
+                        ONIG_OPTION_POSIX_REGION);
+      if (ret < 0) {
+        entry = entry->next;
+        nentries--;
+        continue;
+      }
+    }
+#endif
     GRN_OUTPUT_MAP_OPEN("CACHE_ENTRY", 4);
     GRN_OUTPUT_CSTR("grn_id");
     GRN_OUTPUT_INT32(entry->id);
@@ -182,12 +218,13 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     output_grncache_status(ctx, &statistics);
     break;
   case GRN_CACHE_DUMP:
-    output_grncache_dump(ctx, cache, &statistics);
+    output_grncache_dump(ctx, cache, &statistics, query);
     break;
   case GRN_CACHE_MATCH:
     if (!query) {
       ERR(GRN_INVALID_ARGUMENT, "empty query to match:");
     }
+    output_grncache_dump(ctx, cache, &statistics, query);
     break;
   default:
     ERR(GRN_INVALID_ARGUMENT, "nonexistent option name: <%s>",
@@ -201,6 +238,9 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
 grn_rc
 GRN_PLUGIN_INIT(grn_ctx *ctx)
 {
+#ifdef USE_ONIGURUMA
+  onig_init();
+#endif
   return ctx->rc;
 }
 
@@ -211,7 +251,7 @@ GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 #if GRN_CHECK_VERSION(4,0,3)
   grn_plugin_expr_var_init(ctx, &vars[0], "status", -1);
   grn_plugin_expr_var_init(ctx, &vars[1], "dump", -1);
-  grn_plugin_expr_var_init(ctx, &vars[2], "search", -1);
+  grn_plugin_expr_var_init(ctx, &vars[2], "match", -1);
   grn_plugin_command_create(ctx, "grncache", -1, command_grncache, 3, vars);
 #else
 
@@ -237,5 +277,8 @@ GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 grn_rc
 GRN_PLUGIN_FIN(grn_ctx *ctx)
 {
+#ifdef USE_ONIGURUMA
+  onig_end();
+#endif
   return ctx->rc;
 }
