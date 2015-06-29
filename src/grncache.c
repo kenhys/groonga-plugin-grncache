@@ -164,10 +164,12 @@ GRN_PLUGIN_INIT(grn_ctx *ctx)
 grn_rc
 GRN_PLUGIN_REGISTER(grn_ctx *ctx)
 {
-  grn_expr_var vars[2];
+  grn_expr_var vars[3];
 #if GRN_CHECK_VERSION(4,0,3)
-  grn_plugin_expr_var_init(ctx, &vars[0], "action", -1);
-  grn_plugin_command_create(ctx, "grncache", -1, command_grncache, 1, vars);
+  grn_plugin_expr_var_init(ctx, &vars[0], "status", -1);
+  grn_plugin_expr_var_init(ctx, &vars[1], "dump", -1);
+  grn_plugin_expr_var_init(ctx, &vars[2], "search", -1);
+  grn_plugin_command_create(ctx, "grncache", -1, command_grncache, 3, vars);
 #else
 
 #define CONST_STR_LEN(x) x, x ? sizeof(x) - 1 : 0
