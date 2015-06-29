@@ -52,6 +52,7 @@ AC_ARG_ENABLE(oniguruma,
   [grncache_oniguruma="no"])
 if test "x$grncache_oniguruma" != "xno"; then
   PKG_CHECK_MODULES([ONIGURUMA], [oniguruma])
+  AC_DEFINE_UNQUOTED(USE_ONIGURUMA, [1], [oniguruma])
 fi
 AM_CONDITIONAL(WITH_ONIGURUMA, test "$grncache_oniguruma" = "yes")
 
