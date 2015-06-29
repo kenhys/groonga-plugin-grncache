@@ -37,18 +37,21 @@ Here is the example how to show `Grncache` status.
 
 ```
 > grncache status
+[[0,1435596749.90995,4.48226928710938e-05],{"cache_entries":0,"max_cache_entries":100,"cache_fetched":0,"cache_hit":0,"cache_hit_rate":0.0}]
 ```
 
 Here is the example how to show `Grncache` all entries.
 
 ```
 > grncache dump
+[[0,1435596809.91652,4.22000885009766e-05],,[[3],[{"grn_id":3,"nref":0,"timeval":"2015-06-30 01:53:29.916194","value":"[[[1],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],[3,\"http://pgroonga.github.io/\",\"PGroonga!\"]]]"},{"grn_id":2,"nref":0,"timeval":"2015-06-30 01:53:29.915816","value":"[[[1],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],[2,\"http://mroonga.org/\",\"Mroonga!\"]]]"},{"grn_id":1,"nref":0,"timeval":"2015-06-30 01:53:29.915307","value":"[[[1],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],[1,\"http://groonga.org/\",\"Groonga!\"]]]"}]]
 ```
 
-Here is the example how to show `Grncache` which contains "example".
+Here is the example how to show `Grncache` which contains "github".
 
 ```
 > grncache match example
+[[0,1435596809.91657,2.43186950683594e-05],,[[3],[{"grn_id":3,"nref":0,"timeval":"2015-06-30 01:53:29.916194","value":"[[[1],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],[3,\"http://pgroonga.github.io/\",\"PGroonga!\"]]]"}]]
 ```
 
 ### HTTP query
