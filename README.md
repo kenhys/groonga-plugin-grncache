@@ -45,6 +45,12 @@ Here is the example how to show `Grncache` all entries.
 > grncache dump
 ```
 
+Here is the example how to show `Grncache` which contains "example".
+
+```
+> grncache match example
+```
+
 ### HTTP query
 
 Here is the example how to show `Grncache` status.
