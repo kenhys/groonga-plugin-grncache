@@ -45,7 +45,15 @@ GROONGA="${pkg_cv_GROONGA}"
 AC_SUBST(GROONGA_PLUGINS_DIR)
 AC_SUBST(GROONGA)
 
-PKG_CHECK_MODULES([ONIGURUMA], [oniguruma])
+AC_ARG_ENABLE(oniguruma,
+  [AS_HELP_STRING([--enable-oniguruma],
+                  [use Oniguruma (default=no)])],
+  [grncache_oniguruma="$enableval"],
+  [grncache_oniguruma="no"])
+if test "x$grncache_oniguruma" != "xno"; then
+  PKG_CHECK_MODULES([ONIGURUMA], [oniguruma])
+fi
+AM_CONDITIONAL(WITH_ONIGURUMA, test "$grncache_oniguruma" = "yes")
 
 # DANGER!!!: stack size
 GRN_STACK_SIZE=1024
@@ -94,6 +102,8 @@ echo "  Libraries:             ${GROONGA_LIBS}"
 echo "  install directory:     ${grncache_pluginsdir}"
 echo "   source directory:     ${grnsrc_dir}"
 echo ""
+if test "$grncache_oniguruma" = "yes"; then
 echo "Oniguruma"
 echo "  CFLAGS:                ${ONIGURUMA_CFLAGS}"
 echo "    LIBS:                ${ONIGURUMA_LIBS}"
+fi
