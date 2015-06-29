@@ -145,6 +145,7 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     output_grncache_status(ctx, &statistics);
   } else if (strcmp("dump", GRN_TEXT_VALUE(VAR(0))) == 0) {
     output_grncache_dump(ctx, cache, &statistics);
+  } else if (strcmp("search", GRN_TEXT_VALUE(VAR(0))) == 0) {
   } else {
     ERR(GRN_INVALID_ARGUMENT, "nonexistent option name: <%s>",
         GRN_TEXT_VALUE(VAR(0)));
