@@ -131,22 +131,65 @@ output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *stati
   GRN_OUTPUT_ARRAY_CLOSE();
 }
 
+enum {
+  GRN_CACHE_NONE,
+  GRN_CACHE_STATUS,
+  GRN_CACHE_DUMP,
+  GRN_CACHE_MATCH,
+};
+
 static grn_obj *
 command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_data)
 {
   grn_cache *cache;
   grn_cache_statistics statistics;
+  const char *query = NULL;
+  int mode = GRN_CACHE_NONE;
 
   cache = grn_cache_current_get(ctx);
 
   grn_cache_get_statistics(ctx, cache, &statistics);
 
-  if (strcmp("status", GRN_TEXT_VALUE(VAR(0))) == 0) {
-    output_grncache_status(ctx, &statistics);
-  } else if (strcmp("dump", GRN_TEXT_VALUE(VAR(0))) == 0) {
-    output_grncache_dump(ctx, cache, &statistics);
-  } else if (strcmp("search", GRN_TEXT_VALUE(VAR(0))) == 0) {
+  if (GRN_TEXT_LEN(VAR(0)) > 0) {
+    query = GRN_TEXT_VALUE(VAR(0));
+    if (strcmp("status", GRN_TEXT_VALUE(VAR(0))) == 0) {
+      mode = GRN_CACHE_STATUS;
+    } else if (strcmp("dump", GRN_TEXT_VALUE(VAR(0))) == 0) {
+      mode = GRN_CACHE_DUMP;
+    } else if (strcmp("match", GRN_TEXT_VALUE(VAR(0))) == 0) {
+      mode = GRN_CACHE_MATCH;
+      if (GRN_TEXT_LEN(VAR(1)) > 0) {
+        query = GRN_TEXT_VALUE(VAR(1));
+      }
+    } else {
+      /* --status something */
+      mode = GRN_CACHE_STATUS;
+    }
+  } else if (GRN_TEXT_LEN(VAR(1)) > 0) {
+    /* --dump something */
+    mode = GRN_CACHE_DUMP;
+  } else if (GRN_TEXT_LEN(VAR(2)) > 0) {
+    /* --match something */
+    mode = GRN_CACHE_MATCH;
+    query = GRN_TEXT_VALUE(VAR(2));
   } else {
+    ERR(GRN_INVALID_ARGUMENT, "nonexistent grncache option: <%s>",
+        GRN_TEXT_VALUE(VAR(0)));
+    return NULL;
+  }
+  switch (mode) {
+  case GRN_CACHE_STATUS:
+    output_grncache_status(ctx, &statistics);
+    break;
+  case GRN_CACHE_DUMP:
+    output_grncache_dump(ctx, cache, &statistics);
+    break;
+  case GRN_CACHE_MATCH:
+    if (!query) {
+      ERR(GRN_INVALID_ARGUMENT, "empty query to match:");
+    }
+    break;
+  default:
     ERR(GRN_INVALID_ARGUMENT, "nonexistent option name: <%s>",
         GRN_TEXT_VALUE(VAR(0)));
     return NULL;
