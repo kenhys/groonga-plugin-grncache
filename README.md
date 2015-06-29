@@ -50,7 +50,7 @@ Here is the example how to show `Grncache` all entries.
 Here is the example how to show `Grncache` which contains "github".
 
 ```
-> grncache match example
+> grncache match github
 [[0,1435596809.91657,2.43186950683594e-05],,[[3],[{"grn_id":3,"nref":0,"timeval":"2015-06-30 01:53:29.916194","value":"[[[1],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],[3,\"http://pgroonga.github.io/\",\"PGroonga!\"]]]"}]]
 ```
 
