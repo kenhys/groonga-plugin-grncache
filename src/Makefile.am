@@ -1,5 +1,6 @@
-AM_CFLAGS = \
-	$(GRNINTERNAL_CFLAGS) \
+AM_CFLAGS =			\
+	$(GRNINTERNAL_CFLAGS)	\
+	$(ONIGURUMA_CFLAGS)	\
 	$(GROONGA_CFLAGS)
 
 AM_LDFLAGS =					\
@@ -7,7 +8,9 @@ AM_LDFLAGS =					\
 	-module					\
 	-no-undefined
 
-LIBS =	$(GROONGA_LIBS)
+LIBS =				\
+	$(ONIGURUMA_LIBS)	\
+	$(GROONGA_LIBS)
 
 grncache_plugins_LTLIBRARIES = grncache.la
 
