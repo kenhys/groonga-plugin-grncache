@@ -92,7 +92,6 @@ echo "Groonga"
 echo "  CFLAGS:                ${GROONGA_CFLAGS}"
 echo "  Libraries:             ${GROONGA_LIBS}"
 echo "  install directory:     ${grncache_pluginsdir}"
-echo "   source directory:     ${grnsrc_dir}"
 echo ""
 if test "$grncache_oniguruma" = "yes"; then
 echo "Oniguruma"
