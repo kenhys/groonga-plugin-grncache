@@ -70,7 +70,8 @@ Here is the example how to show `Grncache` all entries.
 
 ## Limitations
 
-`Grncache` requires Groonga 3.0.8 or later because it uses `grn_cache_current_get()` API.
+* `Grncache` requires Groonga 3.0.8 or later because it uses `grn_cache_current_get()` API.
+* No support for Windows because Grncache use Groonga internal function.
 
 ## TODO
 
