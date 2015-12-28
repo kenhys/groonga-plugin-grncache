@@ -43,9 +43,6 @@
 #include <oniguruma.h>
 #endif
 
-#define VAR GRN_PROC_GET_VAR_BY_OFFSET
-#define TEXT_VALUE_LEN(x) GRN_TEXT_VALUE(x), GRN_TEXT_LEN(x)
-
 typedef struct _grn_cache_entry grn_cache_entry;
 
 struct _grn_cache {
@@ -181,36 +178,39 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
   grn_cache_statistics statistics;
   const char *query = NULL;
   int mode = GRN_CACHE_NONE;
+  grn_obj *var;
 
   cache = grn_cache_current_get(ctx);
 
   grn_cache_get_statistics(ctx, cache, &statistics);
 
-  if (GRN_TEXT_LEN(VAR(0)) > 0) {
-    query = GRN_TEXT_VALUE(VAR(0));
-    if (strcmp("status", GRN_TEXT_VALUE(VAR(0))) == 0) {
+  var = grn_plugin_proc_get_var_by_offset(ctx, user_data, 0);
+  if (GRN_TEXT_LEN(var) > 0) {
+    query = GRN_TEXT_VALUE(var);
+    if (strcmp("status", GRN_TEXT_VALUE(var)) == 0) {
       mode = GRN_CACHE_STATUS;
-    } else if (strcmp("dump", GRN_TEXT_VALUE(VAR(0))) == 0) {
+    } else if (strcmp("dump", GRN_TEXT_VALUE(var)) == 0) {
       mode = GRN_CACHE_DUMP;
-    } else if (strcmp("match", GRN_TEXT_VALUE(VAR(0))) == 0) {
+    } else if (strcmp("match", GRN_TEXT_VALUE(var)) == 0) {
       mode = GRN_CACHE_MATCH;
-      if (GRN_TEXT_LEN(VAR(1)) > 0) {
-        query = GRN_TEXT_VALUE(VAR(1));
+      var = grn_plugin_proc_get_var_by_offset(ctx, user_data, 1);
+      if (GRN_TEXT_LEN(var) > 0) {
+        query = GRN_TEXT_VALUE(var);
       }
     } else {
       /* --status something */
       mode = GRN_CACHE_STATUS;
     }
-  } else if (GRN_TEXT_LEN(VAR(1)) > 0) {
+  } else if (GRN_TEXT_LEN(grn_plugin_proc_get_var_by_offset(ctx, user_data, 1)) > 0) {
     /* --dump something */
     mode = GRN_CACHE_DUMP;
-  } else if (GRN_TEXT_LEN(VAR(2)) > 0) {
+  } else if (GRN_TEXT_LEN(grn_plugin_proc_get_var_by_offset(ctx, user_data, 2)) > 0) {
     /* --match something */
     mode = GRN_CACHE_MATCH;
-    query = GRN_TEXT_VALUE(VAR(2));
+    query = GRN_TEXT_VALUE(grn_plugin_proc_get_var_by_offset(ctx, user_data, 2));
   } else {
     ERR(GRN_INVALID_ARGUMENT, "nonexistent grncache option: <%s>",
-        GRN_TEXT_VALUE(VAR(0)));
+        GRN_TEXT_VALUE(var));
     return NULL;
   }
   switch (mode) {
@@ -228,7 +228,7 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     break;
   default:
     ERR(GRN_INVALID_ARGUMENT, "nonexistent option name: <%s>",
-        GRN_TEXT_VALUE(VAR(0)));
+        GRN_TEXT_VALUE(var));
     return NULL;
   }
 
