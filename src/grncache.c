@@ -73,23 +73,23 @@ output_grncache_status(grn_ctx *ctx, grn_cache_statistics *statistics)
 {
   double cache_hit_rate;
 
-  GRN_OUTPUT_MAP_OPEN("RESULT", 5);
-  GRN_OUTPUT_CSTR("cache_entries");
-  GRN_OUTPUT_INT32(statistics->nentries);
-  GRN_OUTPUT_CSTR("max_cache_entries");
-  GRN_OUTPUT_INT32(statistics->max_nentries);
-  GRN_OUTPUT_CSTR("cache_fetched");
-  GRN_OUTPUT_INT32(statistics->nfetches);
-  GRN_OUTPUT_CSTR("cache_hit");
-  GRN_OUTPUT_INT32(statistics->nhits);
-  GRN_OUTPUT_CSTR("cache_hit_rate");
+  grn_ctx_output_map_open(ctx, "result", 5);
+  grn_ctx_output_cstr(ctx, "cache_entries");
+  grn_ctx_output_int32(ctx, statistics->nentries);
+  grn_ctx_output_cstr(ctx, "max_cache_entries");
+  grn_ctx_output_int32(ctx, statistics->max_nentries);
+  grn_ctx_output_cstr(ctx, "cache_fetched");
+  grn_ctx_output_int32(ctx, statistics->nfetches);
+  grn_ctx_output_cstr(ctx, "cache_hit");
+  grn_ctx_output_int32(ctx, statistics->nhits);
+  grn_ctx_output_cstr(ctx, "cache_hit_rate");
   if (statistics->nfetches == 0) {
-    GRN_OUTPUT_FLOAT(0.0);
+    grn_ctx_output_float(ctx, 0.0);
   } else {
     cache_hit_rate = (double)statistics->nhits / (double)statistics->nfetches;
-    GRN_OUTPUT_FLOAT(cache_hit_rate * 100.0);
+    grn_ctx_output_float(ctx, cache_hit_rate * 100.0);
   }
-  GRN_OUTPUT_MAP_CLOSE();
+  grn_ctx_output_map_close(ctx);
 }
 
 /* dump [HEADER, [[N], [{CACHE_ENTRY},...]]],*/
@@ -116,17 +116,17 @@ output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *stati
   }
 #endif
 
-  GRN_OUTPUT_ARRAY_OPEN("RESULT", 2);
-  GRN_OUTPUT_ARRAY_OPEN("CACHE_COUNT", 1);
-  GRN_OUTPUT_INT32(statistics->nentries);
-  GRN_OUTPUT_ARRAY_CLOSE();
+  grn_ctx_output_array_open(ctx, "result", 2);
+  grn_ctx_output_array_open(ctx, "cache_count", 1);
+  grn_ctx_output_int32(ctx, statistics->nentries);
+  grn_ctx_output_array_close(ctx);
 
   if (statistics->nentries == 0) {
-    GRN_OUTPUT_ARRAY_CLOSE();
+    grn_ctx_output_array_close(ctx);
     return;
   }
 
-  GRN_OUTPUT_ARRAY_OPEN("CACHE_ENTRIES", statistics->nentries);
+  grn_ctx_output_array_open(ctx, "CACHE_ENTRIES", statistics->nentries);
   entry = cache->next;
   nentries = statistics->nentries;
   while (entry && nentries > 0) {
@@ -146,25 +146,25 @@ output_grncache_dump(grn_ctx *ctx, grn_cache *cache, grn_cache_statistics *stati
       }
     }
 #endif
-    GRN_OUTPUT_MAP_OPEN("CACHE_ENTRY", 4);
-    GRN_OUTPUT_CSTR("grn_id");
-    GRN_OUTPUT_INT32(entry->id);
-    GRN_OUTPUT_CSTR("nref");
-    GRN_OUTPUT_INT32(entry->nref);
-    GRN_OUTPUT_CSTR("timeval");
+    grn_ctx_output_map_open(ctx, "cache_entry", 4);
+    grn_ctx_output_cstr(ctx, "grn_id");
+    grn_ctx_output_int32(ctx, entry->id);
+    grn_ctx_output_cstr(ctx, "nref");
+    grn_ctx_output_int32(ctx, entry->nref);
+    grn_ctx_output_cstr(ctx, "timeval");
 #if GRN_CHECK_VERSION(5,0,3)
     grn_timeval2str(ctx, &(entry->tv), &buf[0], GRN_TIMEVAL_STR_SIZE);
 #else
     grn_timeval2str(ctx, &(entry->tv), &buf[0]);
 #endif
-    GRN_OUTPUT_STR(buf, strlen(buf));
-    GRN_OUTPUT_CSTR("value");
-    GRN_OUTPUT_STR(GRN_TEXT_VALUE(entry->value), GRN_TEXT_LEN(entry->value));
-    GRN_OUTPUT_MAP_CLOSE();
+    grn_ctx_output_str(ctx, buf, strlen(buf));
+    grn_ctx_output_cstr(ctx, "value");
+    grn_ctx_output_str(ctx, GRN_TEXT_VALUE(entry->value), GRN_TEXT_LEN(entry->value));
+    grn_ctx_output_map_close(ctx);
     entry = entry->next;
     nentries--;
   }
-  GRN_OUTPUT_ARRAY_CLOSE();
+  grn_ctx_output_array_close(ctx);
 }
 
 enum {
