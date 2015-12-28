@@ -24,45 +24,14 @@
 
 #include <string.h>
 
-#if GRN_CHECK_VERSION(4,0,8)
-  #include "grn.h"
-  #include "grn_ctx.h"
-  #include "grn_db.h"
-  #include "grn_ii.h"
-  #include "grn_output.h"
-#else
-  #include "groonga_in.h"
-  #include "ctx_impl.h"
-  #include "db.h"
-  #include "ii.h"
-  #include "output.h"
-#endif
+#include <groonga.h>
 #include <groonga/plugin.h>
 
 #ifdef USE_ONIGURUMA
 #include <oniguruma.h>
 #endif
 
-typedef struct _grn_cache_entry grn_cache_entry;
-
-struct _grn_cache {
-  grn_cache_entry *next;
-  grn_cache_entry *prev;
-  grn_hash *hash;
-  grn_mutex mutex;
-  uint32_t max_nentries;
-  uint32_t nfetches;
-  uint32_t nhits;
-};
-
-struct _grn_cache_entry {
-  grn_cache_entry *next;
-  grn_cache_entry *prev;
-  grn_obj *value;
-  grn_timeval tv;
-  grn_id id;
-  uint32_t nref;
-};
+#include "grncache.h"
 
 /* status [HEADER, {CACHE_STATISTICS}] */
 static void
