@@ -76,9 +76,9 @@ AC_ARG_WITH(groonga-source-dir,
 GRNINTERNAL_CFLAGS="-I${grnsrc_dir}/lib"
 AC_SUBST(GRNINTERNAL_CFLAGS)
 
-grn_major_version=`cat ${grnsrc_dir}/version | cut -d'.' -f1`
-grn_minor_version=`cat ${grnsrc_dir}/version | cut -d'.' -f2`
-grn_micro_version=`cat ${grnsrc_dir}/version | cut -d'.' -f3`
+grn_major_version=`pkg-config --modversion groonga | cut -d'.' -f1`
+grn_minor_version=`pkg-config --modversion groonga | cut -d'.' -f2`
+grn_micro_version=`pkg-config --modversion groonga | cut -d'.' -f3`
 AC_DEFINE_UNQUOTED(GRN_MAJOR_VERSION, [$grn_major_version], [major version])
 AC_DEFINE_UNQUOTED(GRN_MINOR_VERSION, [$grn_minor_version], [minor version])
 AC_DEFINE_UNQUOTED(GRN_MICRO_VERSION, [$grn_micro_version], [micro version])
