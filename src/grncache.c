@@ -209,8 +209,9 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     mode = GRN_CACHE_MATCH;
     query = GRN_TEXT_VALUE(grn_plugin_proc_get_var_by_offset(ctx, user_data, 2));
   } else {
-    ERR(GRN_INVALID_ARGUMENT, "nonexistent grncache option: <%s>",
-        GRN_TEXT_VALUE(var));
+    GRN_LOG(ctx, GRN_LOG_ERROR,
+            "nonexistent grncache option: <%s>",
+            GRN_TEXT_VALUE(var));
     return NULL;
   }
   switch (mode) {
@@ -222,13 +223,14 @@ command_grncache(grn_ctx *ctx, int nargs, grn_obj **args, grn_user_data *user_da
     break;
   case GRN_CACHE_MATCH:
     if (!query) {
-      ERR(GRN_INVALID_ARGUMENT, "empty query to match:");
+      GRN_LOG(ctx, GRN_LOG_ERROR, "empty query to match:");
     }
     output_grncache_dump(ctx, cache, &statistics, query);
     break;
   default:
-    ERR(GRN_INVALID_ARGUMENT, "nonexistent option name: <%s>",
-        GRN_TEXT_VALUE(var));
+    GRN_LOG(ctx, GRN_LOG_ERROR,
+            "nonexistent option name: <%s>",
+            GRN_TEXT_VALUE(var));
     return NULL;
   }
 
