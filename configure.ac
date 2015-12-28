@@ -69,13 +69,6 @@ AC_DEFINE_UNQUOTED(GRN_STACK_SIZE, [$GRN_STACK_SIZE], [stack size])
 grncache_pluginsdir="${GROONGA_PLUGINS_DIR}/grncache"
 AC_SUBST(grncache_pluginsdir)
 
-AC_ARG_WITH(groonga-source-dir,
-  [AS_HELP_STRING([--with-groonga-source-dir],
-                  [specify Groonga source directory (default=empty)])],
-  [grnsrc_dir="$withval"])
-GRNINTERNAL_CFLAGS="-I${grnsrc_dir}/lib"
-AC_SUBST(GRNINTERNAL_CFLAGS)
-
 grn_major_version=`pkg-config --modversion groonga | cut -d'.' -f1`
 grn_minor_version=`pkg-config --modversion groonga | cut -d'.' -f2`
 grn_micro_version=`pkg-config --modversion groonga | cut -d'.' -f3`
