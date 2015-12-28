@@ -15,11 +15,6 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#define GRN_CHECK_VERSION(major,minor,micro)				\
-  (GRN_MAJOR_VERSION > (major) ||					\
-   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION > (minor)) ||	\
-   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION == (minor) && GRN_MICRO_VERSION >= (micro)))
-
 #include "config.h"
 
 #include <string.h>

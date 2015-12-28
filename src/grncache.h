@@ -1,6 +1,11 @@
 #ifndef __GRNCACHE_H_INCLUDED
 #define __GRNCACHE_H_INCLUDED
 
+#define GRN_CHECK_VERSION(major,minor,micro)				\
+  (GRN_MAJOR_VERSION > (major) ||					\
+   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION > (minor)) ||	\
+   (GRN_MAJOR_VERSION == (major) && GRN_MINOR_VERSION == (minor) && GRN_MICRO_VERSION >= (micro)))
+
 /* Use internal definition */
 
 #include <pthread.h>
