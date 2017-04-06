@@ -12,10 +12,13 @@
 typedef pthread_mutex_t grn_mutex;
 
 #include <inttypes.h>
+
+#if !GRN_CHECK_VERSION(6,0,5)
 typedef struct {
   int64_t tv_sec;
   int32_t tv_nsec;
 } grn_timeval;
+#endif
 
 #ifndef GRN_TIMEVAL_STR_SIZE
 #define GRN_TIMEVAL_STR_SIZE 0x100
